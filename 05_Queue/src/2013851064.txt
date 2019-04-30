@@ -1,0 +1,228 @@
+P01
+import java.util.LinkedList;
+
+public class P01 {
+    public static void main(String[] args) {
+        LinkedList<String> queue=new LinkedList<>();
+        queue.addFirst("한국"); // 큐 rear에 자료 삽입, queue.add("한국");
+        queue.addFirst("미국"); // 큐 rear에 자료 삽입
+        queue.addFirst("독일"); // 큐 rear에 자료 삽입
+        System.out.println("큐 전체 내용: "+queue);
+        System.out.println("큐 크기="+queue.size());
+        System.out.println("큐가 비어 있는가? "+queue.isEmpty());
+        String v=null;
+        v=queue.getLast();
+        System.out.println("큐 front 자료 확인="+v);
+        v=queue.removeLast(); // String v=queue.remove();
+        System.out.println("큐 front 추출 값="+v);
+        System.out.println("큐 전체 내용: "+queue);
+        System.out.println("큐 front 추출 값="+queue.removeLast());
+        System.out.println("큐 전체 내용: "+queue);
+        System.out.println("큐 front 추출 값="+queue.removeLast());
+        System.out.println("큐 전체 내용: "+queue);
+        System.out.println("큐가 비어 있는가? "+queue.isEmpty());
+    }
+}
+
+P03
+import java.util.LinkedList;
+
+public class P03 {
+    public static void main(String[] args) {
+        int n=7, k=4;
+        LinkedList<Integer> queue=new LinkedList<>();
+        for (int i=1; i <=n; i++) queue.add(i); // 1 2 3 4 5 6 7
+        int curPos=0;
+        System.out.println(queue.get(curPos+k-1)); // curPos부터 k번째 노드 값 => 4
+        curPos=5;
+        System.out.println(queue.get((curPos+k-1)%n)); // curPos부터 k번째 노드 값 => 2
+    }
+}
+
+P04
+import java.util.LinkedList;
+
+public class P04_A {
+    public static void main(String[] args) {
+        System.out.println(solveJosephusProblem(7, 3));
+    }
+
+    private static int solveJosephusProblem(int n, int k) {
+        LinkedList<Integer> prisoners = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            prisoners.add(i+1);
+        }
+        while(prisoners.size()>1) {
+            for(int i=0;i<k-1;i++)
+                prisoners.add(prisoners.removeFirst());
+            prisoners.removeFirst();
+        }
+        return prisoners.get(0);
+    }
+}
+
+import java.util.LinkedList;
+
+public class P04_B {
+    public static void main(String[] args) {
+        System.out.println(solveJosephusProblem(7,3));
+    }
+    private static LinkedList<Integer> solveJosephusProblem(int n, int k) {
+        LinkedList<Integer> prisoners=new LinkedList<>();
+        int index=k-1;
+        for(int i=0;i<n;i++)
+            prisoners.add(i+1);
+        while(prisoners.size()>1) {
+            prisoners.remove(index);
+            index=(index+k-1)%prisoners.size();
+        }
+        return prisoners;
+    }
+}
+
+P05
+public class P05 {
+    public static void main(String[] args) {
+        int R = 5, C = 6;
+        String s = "012345678901234567890123456789";
+        char maze[][] = new char[R][C];
+        for(int i=0; i<s.length();i++)
+            maze[i/C][i%C]=s.charAt(i);
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++)
+                System.out.print(maze[i][j]);
+            System.out.println();
+        }
+    }
+}
+
+P07
+import java.util.LinkedList;
+import java.util.Stack;
+
+public class P07 {
+    public static void main(String[] args) {
+        class Point {
+            int x, y;
+
+            public Point(int x, int y) {
+                this.x = x;
+                this.y = y;
+            }
+
+            @Override
+            public String toString() {
+                return "(" + x + ", " + y + ")";
+            }
+        }
+        String input =
+                "0000000#" +
+                "##0#0#0#" +
+                "0000000#" +
+                "0#####0#" +
+                "00000###" +
+                "###00000";
+        int R = 6, C = 8;
+        char maze[][] = new char[R][C];
+        for (int i = 0; i < input.length(); i++)
+            maze[i / C][i % C] = input.charAt(i);
+        LinkedList<Point> queue = new LinkedList<Point>();
+        int[][] cost = new int[R][C];
+        maze[0][0] = 'v';
+        queue.addLast(new Point(0, 0));
+        int dx[] = {0, 0, 1, -1}, dy[] = {1, -1, 0, 0,};
+        cost[0][0] = 1;
+        while (!queue.isEmpty()) {
+            Point p = queue.removeFirst();
+            //p에서 갈수있는 위치를 방문표시 후 큐에 삽입
+            for (int i = 0; i < dx.length; i++) {
+                int x = p.x + dx[i], y = p.y + dy[i];
+                if (x < 0 || x >= R || y < 0 || y >= C || maze[x][y] == '#' || maze[x][y] == 'v')
+                    continue;
+                maze[x][y] = 'v';
+                cost[x][y] = cost[p.x][p.y] + 1;
+                queue.addLast(new Point(x, y));
+            }
+        }
+        for(int i=0;i<R;i++) {
+            for(int j=0;j<C;j++) {
+                System.out.printf("%02d ",cost[i][j]);
+            }
+            System.out.println();
+        }
+    }
+}
+
+P08
+import java.util.LinkedList;
+import java.util.Stack;
+
+public class P08 {
+    public static void main(String[] args) {
+        class Point {
+            int x, y;
+
+            public Point(int x, int y) {
+                this.x = x;
+                this.y = y;
+            }
+
+            @Override
+            public String toString() {
+                return "(" + x + ", " + y + ")";
+            }
+        }
+        String input =
+                "0000000#" +
+                        "##0#0#0#" +
+                        "0000000#" +
+                        "0#####0#" +
+                        "00000###" +
+                        "###00000";
+        int R = 6, C = 8;
+        char maze[][] = new char[R][C];
+        for (int i = 0; i < input.length(); i++)
+            maze[i / C][i % C] = input.charAt(i);
+        LinkedList<Point> queue = new LinkedList<Point>();
+        int[][] cost = new int[R][C];
+        maze[0][0] = 'v';
+        queue.addLast(new Point(0, 0));
+        int dx[] = {0, 0, 1, -1}, dy[] = {1, -1, 0, 0,};
+        cost[0][0] = 1;
+        while (!queue.isEmpty()) {
+            Point p = queue.removeFirst();
+            //p에서 갈수있는 위치를 방문표시 후 큐에 삽입
+            for (int i = 0; i < dx.length; i++) {
+                int x = p.x + dx[i], y = p.y + dy[i];
+                if (x < 0 || x >= R || y < 0 || y >= C || maze[x][y] == '#' || maze[x][y] == 'v')
+                    continue;
+                maze[x][y] = 'v';
+                cost[x][y] = cost[p.x][p.y] + 1;
+                queue.addLast(new Point(x, y));
+            }
+        }
+        for(int i=0;i<R;i++) {
+            for(int j=0;j<C;j++) {
+                System.out.printf("%02d ",cost[i][j]);
+            }
+            System.out.println();
+        }
+        System.out.println();
+        Stack<Point> shortest=new Stack<>();
+        shortest.push(new Point(5,7));
+        while(shortest.size()<=cost[5][7]) {
+            Point p = shortest.peek();
+            for (int i = 0; i < dx.length; i++) {
+                int x = p.x + dx[i], y = p.y + dy[i];
+                if (x < 0 || x >= R || y < 0 || y >= C || maze[x][y] == '#')
+                    continue;
+                if(cost[x][y]==cost[p.x][p.y]-1)
+                    shortest.push(new Point(x,y));
+            }
+        }
+        while(!shortest.isEmpty())
+            System.out.print(shortest.pop());
+
+
+    }
+}

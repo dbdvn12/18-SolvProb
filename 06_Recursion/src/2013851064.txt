@@ -1,0 +1,172 @@
+재귀
+14번
+public class P14_A {
+    public static void main(String[] args) {
+        System.out.println(gcd(64, 48));
+    }
+
+    private static int gcd(int a, int b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    }
+}
+public class P14_B {
+    public static void main(String[] args) {
+        System.out.println(gcd(64, 48));
+    }
+
+    private static int gcd(int a, int b) {
+        int tmp;
+        while (b > 0) {
+            tmp = a;
+            a = b;
+            b = tmp % b;
+        }
+        return a;
+    }
+}
+
+15번
+import java.util.LinkedList;
+import java.util.Random;
+
+public class P15 {
+    static int sz;
+    public static void main(String[] args) {
+        int R = 5, C = 5, count = 0;
+        char ground[][] = new char[R][C];
+        Random random = new Random();
+        LinkedList<Integer> size=new LinkedList<>();
+        for (int i = 0; i < ground.length; i++)
+            for (int j = 0; j < ground[i].length; j++) {
+                ground[i][j] = (random.nextInt(3) == 0) ? '1' : '0';
+            }
+        print(ground);
+        for (int i = 0; i < ground.length; i++) {
+            for (int j = 0; j < ground[i].length; j++) {
+                if (ground[i][j] == '1') {
+                    sz=0;
+                    dfs(ground, R, C, i, j);
+                    count++;
+                    size.add(sz);
+                }
+            }
+        }
+        System.out.println("물웅덩이 개수: "+count);
+        while(!size.isEmpty())
+            System.out.print(size.removeFirst()+" ");
+    }
+
+    private static void dfs(char[][] ground, int R, int C, int i, int j) {
+        if (ground[i][j] == '1') {
+            ground[i][j] = '0';
+            sz++;
+        }
+        else return;
+        int dx[] = {-1, 0, 1, -1, 1, -1, 0, 1}, dy[] = {1, 1, 1, 0, 0, -1, -1, -1};
+        for (int k = 0; k < dx.length; k++) {
+            int x = i + dx[k], y = j + dy[k];
+            if (x < 0 || x >= R || y < 0 || y >= C) continue;
+            dfs(ground, R, C, x, y);
+        }
+    }
+
+    private static void print(char[][] ground) {
+        for (int i = 0; i < ground.length; i++) { // 평면 출력
+            for (int j = 0; j < ground[i].length; j++) System.out.print(ground[i][j]);
+            System.out.println();
+        }
+    }
+}
+
+24번
+public class P24 {
+    static int sum=21;
+    static int n[]={1,3,4,5,8,9};
+    public static void main(String[] args) {
+        int subset[]=new int[n.length];
+        subsetSum(subset, 0);
+    }
+    private static void subsetSum(int[] subset, int i) {
+        if(i==n.length){
+            int s=0;
+            for(int j=0;j<subset.length;j++)
+                if(subset[j]==1) s+=n[j];
+            if(s==sum) {
+                for(int j=0;j<subset.length;j++) {
+                    if(subset[j]==1) System.out.print(n[j]+" ");
+                }
+                System.out.println();
+            }
+            return;
+        }
+        subset[i]=0;
+        subsetSum(subset, i+1);
+        subset[i]=1;
+        subsetSum(subset, i+1);
+    }
+}
+
+26번
+public class P26 {
+    static int sum = 21;
+    static int n[] = {1, 3, 4, 5, 8, 9};
+
+    public static void main(String[] args) {
+        int subset[] = new int[n.length];
+        subsetSum(subset, 0, sum); // 최초 도달되어야 할 총합 sum에서 출발
+    }
+
+    private static void subsetSum(int[] subset, int i, int partialSum) {
+        if(i==n.length){
+            if(partialSum==0){
+                for (int j = 0; j < subset.length; j++) if(subset[j]==1) System.out.print(n[j]+" ");
+                System.out.println();
+            }
+            return;
+        }
+        subset[i]=0;
+        subsetSum(subset, i+1, partialSum);
+        subset[i]=1;
+        subsetSum(subset, i+1, partialSum-n[i]);
+    }
+}
+
+27번
+public class P27 {
+    static int sum=21;
+    public static void main(String[] args) {
+        int n[]={1,3,4,5,8,9};
+        System.out.println(subsetSum(n, 0, sum));
+    }
+    private static boolean subsetSum(int[] n, int i, int partialSum) {
+        if(i==n.length) return partialSum==0;
+        return subsetSum(n, i+1, partialSum) || subsetSum(n, i+1, partialSum-n[i]);
+    }
+}
+
+28번
+public class P28 {
+    public static void main(String[] args) {
+        int N = 5, K = 2;
+        int v[] = new int[N];
+        genCombinations(N, K, 0, v, 0);
+    }
+
+    private static void genCombinations(int N, int K, int startIndex, int v[], int len) {
+        if (len == K) {
+            String s = "";
+            for (int i = 0; i < v.length; i++)
+                s += v[i];
+            System.out.println(s);
+            return;
+        }
+        for (int i = startIndex; i < N; i++) {
+            v[i] = 2;
+            genCombinations(N, K, i + 1, v, len + 2);
+            v[i] = 1;
+            genCombinations(N, K, i + 1, v, len + 1);
+            v[i] = 0;
+        }
+    }
+}
